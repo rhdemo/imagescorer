@@ -9,4 +9,4 @@ result = {}
 with open(sys.argv[1], "rb") as f:
     result["image"] = b64encode(f.read()).decode('ascii')
 
-print(json.dumps(result))
+print(json.dumps({"value":result}))
