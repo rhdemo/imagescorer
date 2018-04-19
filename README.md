@@ -4,7 +4,10 @@ Build this image with `docker build -t imagescorer .` and run it with `docker ru
 
 If you have [HTTPie](http://httpie.org) installed, you can use the included `payload.py` script to test, e.g.,
 
-`./payload.py some_file.jpg | http -j localhost:8080/run`
+```bash
+http localhost:8080/init foo=bar
+./payload.py some_file.jpg | http -j localhost:8080/run
+```
 
 The first score will be slower than subsequent ones.
 

@@ -15,8 +15,7 @@ import time
 
 from darkflow.net.build import TFNet
 
-df_options = {"metaLoad": "model/yolo.meta", "pbLoad": "model/yolo.pb", "threshold": 0.1}
-tfnet = TFNet(df_options)
+options = {}
 
 
 class YoloRunner(ActionRunner):
@@ -24,7 +23,9 @@ class YoloRunner(ActionRunner):
     def __init__(self):
         ActionRunner.__init__(self, '/action/__main__.py')
     
-    def initCodeFromString(self, message):
+    def init(self, message):
+        df_options = {"metaLoad": "model/yolo.meta", "pbLoad": "model/yolo.pb", "threshold": 0.1}
+        options["tfnet"] = TFNet(df_options)
         return True
 
     def verify(self):
@@ -52,7 +53,7 @@ class YoloRunner(ActionRunner):
         image = base64.b64decode(params.get("image"))
     
         imgcv = cv2.imdecode(numpy.asarray(bytearray(image), dtype=numpy.uint8), cv2.IMREAD_COLOR)
-        result = tfnet.return_predict(imgcv)
+        result = options["tfnet"].return_predict(imgcv)
 
         params["objects"] = [{"voc": r["label"],
                               "score": float(r["confidence"]),
